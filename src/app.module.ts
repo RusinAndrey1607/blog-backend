@@ -9,6 +9,16 @@ import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-role.model';
 import { AuthModule } from './auth/auth.module';
+import { ProfilesModule } from './profiles/profiles.module';
+import { FilesModule } from './files/files.module';
+import { PostsModule } from './posts/posts.module';
+import { Profile } from './profiles/profile.model';
+import { Post } from './posts/post.model';
+import { TagsModule } from './tags/tags.module';
+import { Tag } from './tags/tag.model';
+import { TagPosts } from './tags/post-tags.model';
+import { CommentsModule } from './comments/comments.module';
+import { Comment } from './comments/comment.model';
 
 @Module({
     imports:[
@@ -23,7 +33,8 @@ import { AuthModule } from './auth/auth.module';
             password: process.env.POSTGRES_PASSWORD,
             host: process.env.POSTGRES_HOST,
             autoLoadModels: true,
-            models: [User,Role,UserRoles],
+            models: [User,Role,UserRoles,Profile,Post,Tag,TagPosts,Comment],
+            synchronize:true
         }),
         ServeStaticModule.forRoot({
             rootPath: resolve(__dirname, 'static'),
@@ -32,6 +43,11 @@ import { AuthModule } from './auth/auth.module';
         UsersModule,
         RolesModule,
         AuthModule,
+        ProfilesModule,
+        FilesModule,
+        PostsModule,
+        TagsModule,
+        CommentsModule
     ]
 })
 export class AppModule {}

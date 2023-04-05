@@ -16,7 +16,12 @@ export class UsersService {
 
   async createUser(dto: CreateUserDto) {
     const user = await this.userRepository.create(dto);
-    const role = await this.rolesService.getRoleByValue('ADMIN');
+    let role;
+    if (dto.email == 'admin@gmail.com') {
+      role = await this.rolesService.getRoleByValue('ADMIN');
+    } else {
+      role = await this.rolesService.getRoleByValue('USER');
+    }
     await user.$set('roles', [role.id]);
     user.roles = [role];
     return user;
@@ -57,15 +62,14 @@ export class UsersService {
     }
     throw new HttpException('User not Found', HttpStatus.NOT_FOUND);
   }
-  async unBanUser(dto:UnBanUserDto){
+  async unBanUser(dto: UnBanUserDto) {
     const user = await this.userRepository.findByPk(dto.userId);
     if (user) {
       user.banned = false;
-      user.banReason = "";
+      user.banReason = '';
       await user.save();
       return user;
     }
     throw new HttpException('User not Found', HttpStatus.NOT_FOUND);
   }
 }
-
